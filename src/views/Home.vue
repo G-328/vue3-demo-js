@@ -3,26 +3,38 @@
     <img alt="Vue logo" src="../assets/logo.png">
     <p @click="testFor">我的</p>
     <p>世界</p>
-    <template v-for="(item, index) in forArr" :key="index">
-      <!-- <p :ref="setItemRef">{{item.name}}</p> -->
-    </template>
+    <!-- <template v-for="(item, index) in forArr" :key="index">
+      <p :ref="setItemRef">{{item.name}}</p>
+    </template> -->
     <template v-for="(item, index) in itemRefs" :key="index">
       <p>{{index}}</p>
     </template>
     <p>{{count}}</p>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HiWorld></HiWorld>
+    <HelloWorld msg="Hello World!"/>
   </div>
 </template>
 
 <script>
 import HelloWorld from '@/components/HelloWorld.vue'
 
-import { onBeforeUpdate, onUpdated, ref, reactive } from 'vue'
+import {
+  onMounted,
+  onUpdated,
+  onBeforeUpdate,
+  ref, // 定义响应式基本类型
+  reactive, // 定义响应式对象
+  defineAsyncComponent, // 异步组件
+} from 'vue'
+const HiWorld = defineAsyncComponent({
+  loader: () => import("@/components/HiWorld.vue"),
+})
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    HiWorld,
+    HelloWorld,
   },
   data() {
     return {
@@ -36,9 +48,9 @@ export default {
   },
   methods: {
     // testFor() {
-    //   console.log("testFor", this.itemRefs)
+    //   console.log("testFor", this.$refs.helloworld)
     // },
-    // setItemRef(el) {
+    // setItemRef1(el) {
     //   console.log("setItemRef", el, arguments)
     //   if(el) {
     //     this.itemRefs.push(el)
@@ -60,12 +72,15 @@ export default {
     const testFor = () => {
       count.value = 3;
     }
+    onMounted(() => {
+      console.log("onBeforeUpdate", /* itemRefs ,*/ /* count, */)
+    }),
     onBeforeUpdate(() => {
-      console.log("onBeforeUpdate", /* itemRefs ,*/ count)
+      console.log("onBeforeUpdate", /* itemRefs ,*/)
       // itemRefs = []
     })
     onUpdated(() => {
-      console.log("onUpdated", /* itemRefs ,*/ count)
+      console.log("onUpdated", /* itemRefs ,*/)
     })
     return {
       count,
@@ -74,15 +89,5 @@ export default {
       setItemRef
     }
   },
-  // beforeUpdate() {
-  //   console.log("beforeUpdate", arguments)
-  //   console.log(this.itemRefs)
-  //   // this.itemRefs = []
-  // },
-  // updated() {
-  //   console.log("updated", arguments)
-  //   console.log(this.itemRefs)
-  // }
 }
-
 </script>

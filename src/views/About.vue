@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button @click="popup">弹窗测试</el-button>
-    <p v-highlight="'yellow'">高亮显示此文本亮黄色</p>
+    <p v-highlight="color" v-setBorder>高亮显示此文本亮黄色</p>
     <el-dialog
       width="30%"
       title="提示"
@@ -9,9 +9,8 @@
       v-model="dialogVisible"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      v-highlight="'yellow'"
     >
-      <div class="pou" v-highlight="'yellow'">
+      <div class="pou">
         <span>这是一段信息</span>
       </div>
       <template #footer>
@@ -37,13 +36,15 @@ export default {
   name: 'About',
   data() {
     return {
-      dialogVisible: false
+      dialogVisible: false,
+      color: "yellow"
     }
   },
   methods: {
     popup() {
       console.log("popup")
       this.dialogVisible = true
+      this.color = "red"
     },
   },
   setup() {},
